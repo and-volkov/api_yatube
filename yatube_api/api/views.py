@@ -1,6 +1,5 @@
-from rest_framework import status, viewsets
-from rest_framework.decorators import action
-from rest_framework.response import Response
+from rest_framework import viewsets
+from rest_framework.permissions import IsAuthenticated
 
 from posts.models import Group, Comment, Post
 from .permissions import IsAuthorOrReadOnly
@@ -12,13 +11,14 @@ class GroupViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
+    permission_classes = (IsAuthenticated,)
 
 
 class CommentViewSet(viewsets.ModelViewSet):
     """Вью-сет для модели комментариев."""
 
     serializer_class = CommentSerializer
-    permission_classes = (IsAuthorOrReadOnly,)
+    permission_classes = (IsAuthenticated, IsAuthorOrReadOnly)
 
     def get_queryset(self):
         # Получает комментарии к отдельному посту.
@@ -38,7 +38,7 @@ class PostViewSet(viewsets.ModelViewSet):
     """Вью-сет для модели постов."""
     queryset = Post.objects.all()
     serializer_class = PostSerializer
-    permission_classes = (IsAuthorOrReadOnly,)
+    permission_classes = (IsAuthenticated, IsAuthorOrReadOnly)
 
     def perform_create(self, serializer):
         # Добавляет автора при создании поста
