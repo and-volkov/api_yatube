@@ -11,7 +11,13 @@ class GroupSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    author = serializers.StringRelatedField(read_only=True)
+    # Я так понимаю, что slug лучше.
+    # Он подходит для полей модели с unique=True,
+    # Что бы однозначно идентифицировать автора.
+    author = serializers.SlugRelatedField(
+        slug_field='username',
+        read_only=True
+    )
     post = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
@@ -21,8 +27,10 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     comments = CommentSerializer(read_only=True, many=True)
-    author = serializers.StringRelatedField(
-        read_only=True)
+    author = serializers.SlugRelatedField(
+        slug_field='username',
+        read_only=True
+    )
 
     class Meta:
         model = Post

@@ -8,7 +8,6 @@ from .serializers import CommentSerializer, GroupSerializer, PostSerializer
 
 class GroupViewSet(viewsets.ReadOnlyModelViewSet):
     """Вью-сет для модели групп."""
-
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
     permission_classes = (IsAuthenticated,)
@@ -16,7 +15,6 @@ class GroupViewSet(viewsets.ReadOnlyModelViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
     """Вью-сет для модели комментариев."""
-
     serializer_class = CommentSerializer
     permission_classes = (IsAuthenticated, IsAuthorOrReadOnly)
 
